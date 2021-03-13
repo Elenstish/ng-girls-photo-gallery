@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./photo-upload.component.scss']
 })
 export class PhotoUploadComponent implements OnInit {
-  filesCollection = [];
+  filesCollection;
 
   constructor(private photosService: PhotosService) { }
 

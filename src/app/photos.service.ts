@@ -58,13 +58,16 @@ const initialPhotos: Photo[] = [
 })
 export class PhotosService {
   photos: Photo[] = initialPhotos;
-
   newPhotos$ = new Subject();
+  noPhotoID = '';
+  activePhotoID$ = new BehaviorSubject(this.noPhotoID);
+
+  constructor(private categoriesService: CategoriesService) { }
 
   setCategoryID = ([newPhotos, categoryID]): Photo[] =>
       newPhotos.map(photo => assoc('categoryID', categoryID, photo))
 
-  private allNewPhotos$ = this.newPhotos$.pipe(
+  allNewPhotos$ = this.newPhotos$.pipe(
       withLatestFrom(this.categoriesService.activeCategory$),
       map(this.setCategoryID),
       scan((allNewPhotos, newPhotos) => allNewPhotos.concat(newPhotos), []),
@@ -75,18 +78,15 @@ export class PhotosService {
     of(this.photos),
     this.allNewPhotos$
   ]).pipe(
-      map(flatten)
+      map((collection: Array<Array<Photo>>) => flatten(collection)),
   );
 
-  noPhotoID = '';
-  activePhotoID$ = new BehaviorSubject(this.noPhotoID);
-
   findPhotoByID = (photos: Photo[], photoID: string) =>
-      photos.find(propEq('id', photoID));
+      photos.find(propEq('id', photoID))
 
   activePhoto$: Observable<Photo> = this.activePhotoID$.pipe(
       withLatestFrom(this.photos$),
-      map(([photoID, photos]) => this.findPhotoByID(this.photos, photoID)),
+      map(([photoID, photos]) => this.findPhotoByID(photos, photoID))
   );
 
   filterPhotosByCategory = map(([categoryID, photos]) => filter(
@@ -99,5 +99,4 @@ export class PhotosService {
       this.photos$,
   ]).pipe(this.filterPhotosByCategory);
 
-  constructor(private categoriesService: CategoriesService) { }
 }

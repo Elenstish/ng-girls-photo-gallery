@@ -1,6 +1,7 @@
 export interface Photo {
     url: string;
-    description: string;
+    description?: string;
+    name?: string;
     id: string;
     categoryID?: string;
 }
