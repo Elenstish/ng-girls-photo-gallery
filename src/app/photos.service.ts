@@ -6,8 +6,7 @@ import {map, scan, startWith, withLatestFrom} from 'rxjs/operators';
 import flatten from 'ramda/es/flatten';
 import {CategoriesService} from './categories.service';
 import filter from 'ramda/es/filter';
-// import assoc from 'ramda/es/assoc';
-// import { CategoriesService } from './categories.service'
+import assoc from 'ramda/es/assoc';
 
 const initialPhotos: Photo[] = [
   {
@@ -62,11 +61,15 @@ export class PhotosService {
 
   newPhotos$ = new Subject();
 
+  setCategoryID = ([newPhotos, categoryID]): Photo[] =>
+      newPhotos.map(photo => assoc('categoryID', categoryID, photo))
+
   private allNewPhotos$ = this.newPhotos$.pipe(
-      scan((allPhotos, newPhotos) =>
-          allPhotos.concat(newPhotos), []),
+      withLatestFrom(this.categoriesService.activeCategory$),
+      map(this.setCategoryID),
+      scan((allNewPhotos, newPhotos) => allNewPhotos.concat(newPhotos), []),
       startWith([]),
-  );
+  )
 
   photos$ = combineLatest([
     of(this.photos),
