@@ -6,17 +6,25 @@ import { AppComponent } from './app.component';
 import { PhotoComponent } from './photo/photo.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { ActivePhotoComponent } from './active-photo/active-photo.component';
+import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
+import { CategoriesComponent } from './categories/categories.component';
+import {FormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     PhotoComponent,
     GalleryComponent,
-    ActivePhotoComponent
+    ActivePhotoComponent,
+    PhotoUploadComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
