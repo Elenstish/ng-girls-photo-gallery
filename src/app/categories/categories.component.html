@@ -1,6 +1,6 @@
 <div class="categories">
     <div *ngFor="let category of categoriesList$ | async"
-         class="category"
+         [ngClass]="{'category': true, 'active-category': category.active}"
          (click)="onCategoryClick(category.id)">
         {{ category.name }}
     </div>

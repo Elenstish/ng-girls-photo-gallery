@@ -61,6 +61,7 @@ export class PhotosService {
   newPhotos$ = new Subject();
   noPhotoID = '';
   activePhotoID$ = new BehaviorSubject(this.noPhotoID);
+  filterPhotosByCategory = map(([categoryID, photos]) => filter(propEq('categoryID', categoryID), photos));
 
   constructor(private categoriesService: CategoriesService) { }
 
@@ -72,7 +73,7 @@ export class PhotosService {
       map(this.setCategoryID),
       scan((allNewPhotos, newPhotos) => allNewPhotos.concat(newPhotos), []),
       startWith([]),
-  )
+  );
 
   photos$ = combineLatest([
     of(this.photos),
@@ -81,18 +82,12 @@ export class PhotosService {
       map((collection: Array<Array<Photo>>) => flatten(collection)),
   );
 
-  findPhotoByID = (photos: Photo[], photoID: string) =>
-      photos.find(propEq('id', photoID))
+  findPhotoByID = (photos: Photo[], photoID: string) => photos.find(propEq('id', photoID));
 
   activePhoto$: Observable<Photo> = this.activePhotoID$.pipe(
       withLatestFrom(this.photos$),
       map(([photoID, photos]) => this.findPhotoByID(photos, photoID))
   );
-
-  filterPhotosByCategory = map(([categoryID, photos]) => filter(
-      propEq('categoryID', categoryID),
-      photos
-  ));
 
   activeCategoryPhotos$ = combineLatest([
       this.categoriesService.activeCategory$,
