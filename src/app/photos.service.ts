@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Photo} from './photo';
+import {BehaviorSubject, Observable} from 'rxjs';
+import propEq from 'ramda/es/propEq';
+import {map} from 'rxjs/operators';
 
 const initialPhotos: Photo[] = [
   {
@@ -46,5 +49,14 @@ export class PhotosService {
   constructor() { }
 
   photos: Photo[] = initialPhotos;
+  noPhotoID = '';
+  activePhotoID$ = new BehaviorSubject(this.noPhotoID);
+
+  findPhotoByID = (photoID: string) =>
+      this.photos.find(propEq('id', photoID))
+
+  activePhoto$: Observable<Photo> = this.activePhotoID$.pipe(
+      map(this.findPhotoByID)
+  );
 
 }

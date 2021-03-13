@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Photo} from '../photo';
+import {PhotosService} from '../photos.service';
 
 @Component({
   selector: 'app-photo',
@@ -9,13 +10,13 @@ import {Photo} from '../photo';
 export class PhotoComponent implements OnInit {
   @Input() photo: Photo;
 
-  constructor() { }
+  constructor(private photosService: PhotosService) { }
 
   ngOnInit(): void {
   }
 
-  onPhotoClick(id) {
-    console.warn(id);
+  onPhotoClick(photoID: string): void {
+    this.photosService.activePhotoID$.next(photoID);
   }
 
 }
