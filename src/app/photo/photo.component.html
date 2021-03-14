@@ -1,3 +1,11 @@
 <div class="photo">
-    <img (click)="onPhotoClick(photo.id)" [src]="photo.url">
+    <ng-template #elseImage>
+        <img (click)="onPhotoClick(photo.id)" [src]="photo.url">
+    </ng-template>
+    <pdf-viewer *ngIf="isPDF; else elseImage"
+        [src]="photo.url"
+        [original-size]="false"
+        [render-text]="true"
+        (click)="onPhotoClick(photo.id)"
+    ></pdf-viewer>
 </div>

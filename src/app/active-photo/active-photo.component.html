@@ -2,5 +2,11 @@
      class="active-photo"
      (click)="hidePhoto()"
 >
-    <img [src]="photo.url">
+    <ng-template #elseImage>
+        <img [src]="photo.url">
+    </ng-template>
+    <pdf-viewer *ngIf="isPDF; else elseImage"
+                [src]="photo.url"
+                [render-text]="true"
+    ></pdf-viewer>
 </div>

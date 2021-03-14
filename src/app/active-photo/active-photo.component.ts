@@ -10,16 +10,18 @@ import {Subscription} from 'rxjs';
 })
 export class ActivePhotoComponent implements OnInit, OnDestroy {
   photo: Photo;
-
+  isPDF = false;
   photoSubscription: Subscription;
 
   constructor(private photosService: PhotosService) { }
 
   ngOnInit(): void {
-   this.photoSubscription =
-        this.photosService.activePhoto$.subscribe(photo => {
-          this.photo = photo;
-        });
+   this.photoSubscription = this.photosService.activePhoto$.subscribe(photo => {
+     this.photo = photo;
+     if (this.photo) {
+       this.isPDF = (this.photo.url.indexOf('pdf') > -1);
+     }
+   });
   }
 
   ngOnDestroy(): void {
