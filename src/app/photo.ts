@@ -4,4 +4,5 @@ export interface Photo {
     name?: string;
     id: string;
     categoryID?: string;
+    type?: string;
 }

@@ -25,6 +25,7 @@ export class PhotoUploadComponent {
               (image, idx) => ({
                 name: image.name,
                 id: uuidv4(),
+                type: image.type,
                 url: imagesSources[idx]
               })
           );

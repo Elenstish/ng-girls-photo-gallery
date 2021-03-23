@@ -14,7 +14,7 @@ export class PhotoComponent implements OnInit {
   constructor(private photosService: PhotosService) { }
 
   ngOnInit(): void {
-    this.isPDF = (this.photo.url.indexOf('pdf') > -1);
+    this.isPDF = (this.photo.type && this.photo.type.indexOf('pdf') > -1);
   }
 
   onPhotoClick(photoID: string): void {
